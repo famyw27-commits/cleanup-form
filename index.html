@@ -125,10 +125,8 @@ button.ghost{background:var(--card);color:var(--accent);border:1px solid var(--a
         follow: { ifValue: "research", opts: APPLY, q: "If manually researched, how should the new emails be applied?" } },
       { id: "rs", type: "number", val: "80", min: "0", max: "100", fl: "Minimum percentage confirmed as still working", cm: true,
         q: "Contacts with a risky email address whose only activity was more than {N} months ago will be sampled at random, 100 contacts by hand. If at least the percentage below of the sampled emails are confirmed to still work, the rest of this group will be left as is. If not, the rest will be treated as priority 2 for cleanup." },
-      { id: "np", type: "choice", opts: [["archive","Archive them"],["keep","Keep them"]],
-        q: "Non-person email addresses (such as info@ or billing@) that are on a marketing list: should they be archived or kept?" },
-      { id: "ml", type: "choice", opts: [["archive","Archive them"],["leave","Leave them as is"]],
-        q: "Contacts who would be archived under the rules above but are on a marketing list: what should we do with them?" },
+      { id: "ml", type: "choice", opts: [["all","Archive them all"],["none","Leave them all as is"],["click","Leave them as is if they clicked a link in an email in the past {N} months, and archive the rest"]],
+        q: "Contacts on a marketing list who would otherwise be archived, including non-person addresses such as info@ or billing@: what should we do with them?" },
       { id: "ex1", type: "long", ph: "List the practice areas, or write none",
         q: "Are there practice areas that should be excluded from the {N}-month archive rule, so their contacts are always kept? (For example, IP or Estates.)" },
       { id: "ex2", type: "long", ph: "List the names, or write none", cm: true,
@@ -175,7 +173,7 @@ button.ghost{background:var(--card);color:var(--accent);border:1px solid var(--a
     opts.forEach(function(o){
       var lab = h("label", { "class": "opt" });
       lab.appendChild(h("input", { type: "radio", name: name, value: o[0] }));
-      lab.appendChild(h("span", { text: o[1] }));
+      var sp = h("span", { text: o[1] }); tplNodes.push({ el: sp, tpl: o[1] }); lab.appendChild(sp);
       wrap.appendChild(lab);
     });
     return wrap;
